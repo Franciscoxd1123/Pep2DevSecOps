@@ -36,7 +36,7 @@ pipeline {
             }
         }
 
-        stage('SonarQube analysis') {
+        stage('SonarQube analysis backend') {
             steps {
                 withSonarQubeEnv('SonarQube_Server') {
                     script {
@@ -97,6 +97,36 @@ pipeline {
                         sh 'cd prestabanco-frontend && npm run build'
                     } else {
                         bat 'cd prestabanco-frontend && npm run build'
+                    }
+                }
+            }
+        }
+
+        stage('SonarQube analysis frontend') {
+            steps {
+                withSonarQubeEnv('SonarQube_Server') {
+                    script {
+                        if (isUnix()) {
+                            sh '''
+                                cd prestabanco-frontend
+                                sonar-scanner \
+                                -Dsonar.projectKey=prestabanco-frontend \
+                                -Dsonar.sources=src \
+                                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+                                -Dsonar.host.url=$SONAR_HOST_URL \
+                                -Dsonar.login=$SONAR_AUTH_TOKEN
+                            '''
+                        } else {
+                            bat '''
+                                cd prestabanco-frontend
+                                sonar-scanner ^
+                                -Dsonar.projectKey=prestabanco-frontend ^
+                                -Dsonar.sources=src ^
+                                -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info ^
+                                -Dsonar.host.url=%SONAR_HOST_URL% ^
+                                -Dsonar.login=%SONAR_AUTH_TOKEN%
+                            '''
+                        }
                     }
                 }
             }
