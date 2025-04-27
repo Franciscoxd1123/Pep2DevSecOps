@@ -90,6 +90,18 @@ pipeline {
             }
         }
 
+        stage('Install SonarQube Scanner') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'cd prestabanco-frontend && npm install -g sonar-scanner'
+                    } else {
+                        bat 'cd prestabanco-frontend && npm install -g sonar-scanner'
+                    }
+                }
+            }
+        }
+
         stage('Build frontend') {
             steps {
                 script {
