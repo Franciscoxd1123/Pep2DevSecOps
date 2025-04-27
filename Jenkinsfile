@@ -41,9 +41,9 @@ pipeline {
                 withSonarQubeEnv('SonarQube_Server') {
                     script {
                         if (isUnix()) {
-                            sh 'cd prestabanco-backend && ./mvnw clean verify sonar:sonar -Dsonar.projectKey=prestabanco-backend'
+                            sh 'cd prestabanco-backend && ./mvnw clean verify sonar:sonar'
                         } else {
-                            bat 'cd prestabanco-backend && mvnw clean verify sonar:sonar -Dsonar.projectKey=prestabanco-backend'
+                            bat 'cd prestabanco-backend && mvnw clean verify sonar:sonar'
                         }
                     }
                 }
