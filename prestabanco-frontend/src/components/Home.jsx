@@ -126,7 +126,7 @@ const Home = () => {
                    severity="info" 
                    sx={{ width: '100%' }}
                >
-                   Para solicitar un préstamo,debes iniciar sesión primero
+                   Para solicitar un préstamo, debes iniciar sesión primero
                </Alert>
            </Snackbar>
        </Box>
