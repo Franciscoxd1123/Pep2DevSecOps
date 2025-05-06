@@ -34,14 +34,14 @@ pipeline {
                                 export SNYK_TOKEN=${SNYK_TOKEN}
                                 cd prestabanco-backend
                                 # Solo análisis de código (SAST)
-                                /usr/local/bin/snyk code test --severity-threshold=high || true
+                                /usr/local/bin/snyk code test --severity-threshold=low || true
                             '''
                         } else {
                             bat '''
                                 set SNYK_TOKEN=%SNYK_TOKEN%
                                 cd prestabanco-backend
                                 REM Solo análisis de código (SAST)
-                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe code test --severity-threshold=high || true
+                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe code test --severity-threshold=low || true
                             '''
                         }
                     }
@@ -61,7 +61,7 @@ pipeline {
                                 cd prestabanco-backend
                                 mkdir -p reports
                                 # Reporte de código (SAST)
-                                /usr/local/bin/snyk code test --json --severity-threshold=high > reports/snyk-sast-output.json || true
+                                /usr/local/bin/snyk code test --json --severity-threshold=low > reports/snyk-sast-output.json || true
                                 /usr/local/bin/snyk-to-html -i reports/snyk-sast-output.json -o reports/snyk-backend-sast-report.html || true
                             '''
                         } else {
@@ -70,7 +70,7 @@ pipeline {
                                 cd prestabanco-backend
                                 mkdir -p reports
                                 REM Reporte de código (SAST)
-                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe code test --json --severity-threshold=high > reports\\snyk-sast-output.json || true
+                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe code test --json --severity-threshold=low > reports\\snyk-sast-output.json || true
                                 npx snyk-to-html -i reports\\snyk-sast-output.json -o reports\\snyk-backend-sast-report.html || true
                             '''
                         }
@@ -134,7 +134,7 @@ pipeline {
                         } else {
                             bat '''
                                 set SNYK_TOKEN=%SNYK_TOKEN%
-                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe container test kahaozeng/prestabanco-backend:latest --severity-threshold=high || true
+                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe container test kahaozeng/prestabanco-backend:latest --severity-threshold=low || true
                             '''
                         }
                     }
@@ -165,14 +165,14 @@ pipeline {
                                 export SNYK_TOKEN=${SNYK_TOKEN}
                                 cd prestabanco-frontend
                                 # Solo análisis de código (SAST)
-                                /usr/local/bin/snyk code test --severity-threshold=high || true
+                                /usr/local/bin/snyk code test --severity-threshold=low || true
                             '''
                         } else {
                             bat '''
                                 set SNYK_TOKEN=%SNYK_TOKEN%
                                 cd prestabanco-frontend
                                 REM Solo análisis de código (SAST)
-                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe code test --severity-threshold=high || true
+                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe code test --severity-threshold=low || true
                             '''
                         }
                     }
@@ -192,7 +192,7 @@ pipeline {
                                 cd prestabanco-frontend
                                 mkdir -p reports
                                 # Reporte de código (SAST)
-                                /usr/local/bin/snyk code test --json --severity-threshold=high > reports/snyk-sast-output.json || true
+                                /usr/local/bin/snyk code test --json --severity-threshold=low > reports/snyk-sast-output.json || true
                                 /usr/local/bin/snyk-to-html -i reports/snyk-sast-output.json -o reports/snyk-frontend-sast-report.html || true
                             '''
                         } else {
@@ -201,7 +201,7 @@ pipeline {
                                 cd prestabanco-frontend
                                 mkdir -p reports
                                 REM Reporte de código (SAST)
-                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe code test --json --severity-threshold=high > reports\\snyk-sast-output.json || true
+                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe code test --json --severity-threshold=low > reports\\snyk-sast-output.json || true
                                 npx snyk-to-html -i reports\\snyk-sast-output.json -o reports\\snyk-frontend-sast-report.html || true
                             '''
                         }
@@ -265,7 +265,7 @@ pipeline {
                         } else {
                             bat '''
                                 set SNYK_TOKEN=%SNYK_TOKEN%
-                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe container test kahaozeng/prestabanco-frontend:latest --severity-threshold=high || true
+                                C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe container test kahaozeng/prestabanco-frontend:latest --severity-threshold=low || true
                             '''
                         }
                     }
