@@ -24,13 +24,13 @@ pipeline {
             }
         }
 
-        stage('Test backend') {
+        stage('Test backend and Generate coverage report') {
             steps {
                 script {
                     if (isUnix()) {
-                        sh 'cd prestabanco-backend && ./mvnw test'
+                        sh 'cd prestabanco-backend && ./mvnw verify'
                     } else {
-                        bat 'cd prestabanco-backend && mvnw test'
+                        bat 'cd prestabanco-backend && mvnw verify'
                     }
                 }
             }
@@ -41,9 +41,19 @@ pipeline {
                 withSonarQubeEnv('SonarQube_Server') {
                     script {
                         if (isUnix()) {
-                            sh 'cd prestabanco-backend && ./mvnw clean verify sonar:sonar'
+                            sh '''
+                                cd prestabanco-backend
+                                ./mvnw sonar:sonar \
+                                -Dsonar.projectKey=prestabanco-backend \
+                                -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                            '''
                         } else {
-                            bat 'cd prestabanco-backend && mvnw clean verify sonar:sonar'
+                            bat '''
+                                cd prestabanco-backend
+                                mvnw sonar:sonar ^
+                                -Dsonar.projectKey=prestabanco-backend ^
+                                -Dsonar.coverage.jacoco.xmlReportPaths=target\\site\\jacoco\\jacoco.xml
+                            '''
                         }
                     }
                 }
