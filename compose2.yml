@@ -18,7 +18,7 @@ services:
     container_name: backend-1
     environment:
       DB_HOST: postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/prestabanco
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
     ports:
@@ -33,7 +33,7 @@ services:
     image: postgres:latest
     container_name: postgres-1
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: prestabanco
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
     ports:
