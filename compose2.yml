@@ -1,7 +1,32 @@
-
 version: '3'
 
 services:
+  
+  localhost:
+    image: postgres:latest
+    container_name: postgres-1
+    environment:
+      POSTGRES_DB: postgres  
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5433:5432"  
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # Backend service
+  backend:
+    image: kahaozeng/prestabanco-backend:latest
+    container_name: backend-1
+    ports:
+      - "8090:8090"
+    depends_on:
+      - localhost 
+    networks:
+      - app-network
+
   # Frontend service
   frontend:
     image: kahaozeng/prestabanco-frontend:latest
@@ -10,26 +35,12 @@ services:
       - "8070:80"
     depends_on:
       - backend
+    networks:
+      - app-network
 
-  # PostgreSQL service 
-  postgres:
-    image: postgres:latest
-    container_name: postgres-1
-    environment:
-      POSTGRES_DB: postgres    
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
-
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres:/var/lib/postgresql/data
-
-  # Backend service
-  backend:
-    image: kahaozeng/prestabanco-backend:latest
-    container_name: backend-1
-    network_mode: "host"
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   postgres:
