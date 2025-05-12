@@ -79,6 +79,40 @@ pipeline {
             }
         }
 
+        // Snyk Container Security para Backend
+        stage('Snyk Container Security - Backend') {
+            steps {
+                script {
+                    echo 'Running Snyk container security analysis for backend'
+                    withCredentials([string(credentialsId: 'snyk-token-string', variable: 'SNYK_TOKEN')]) {
+                        bat '''
+                            set SNYK_TOKEN=%SNYK_TOKEN%
+                            C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe container test kahaozeng/prestabanco-backend:latest --severity-threshold=low || true
+                        '''
+                    }
+                }
+            }
+        }
+
+        // Reporte HTML para Container Security - Backend
+        stage('Snyk Container Security Report - Backend') {
+            steps {
+                script {
+                    echo 'Generating Snyk Container Security HTML report for Backend'
+                    withCredentials([string(credentialsId: 'snyk-token-string', variable: 'SNYK_TOKEN')]) {
+                        bat '''
+                            set SNYK_TOKEN=%SNYK_TOKEN%
+                            mkdir -p prestabanco-backend\\reports
+                            C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe container test kahaozeng/prestabanco-backend:latest --json --severity-threshold=low > prestabanco-backend\\reports\\snyk-container-output.json || true
+                            cd prestabanco-backend
+                            npx snyk-to-html -i reports\\snyk-container-output.json -o reports\\snyk-backend-container-report.html || true
+                        '''
+                        archiveArtifacts artifacts: 'prestabanco-backend/reports/snyk-backend-container-report.html', allowEmptyArchive: true
+                    }
+                }
+            }
+        }
+
         stage('Install frontend dependencies') {
             steps {
                 script {
@@ -142,6 +176,40 @@ pipeline {
                         }
                     } catch (Exception e) {
                         echo "Warning: Could not push Docker image. Continuing pipeline. Error: ${e.message}"
+                    }
+                }
+            }
+        }
+
+        // Snyk Container Security para Frontend
+        stage('Snyk Container Security - Frontend') {
+            steps {
+                script {
+                    echo 'Running Snyk container security analysis for frontend'
+                    withCredentials([string(credentialsId: 'snyk-token-string', variable: 'SNYK_TOKEN')]) {
+                        bat '''
+                            set SNYK_TOKEN=%SNYK_TOKEN%
+                            C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe container test kahaozeng/prestabanco-frontend:latest --severity-threshold=low || true
+                        '''
+                    }
+                }
+            }
+        }
+
+        // Reporte HTML para Container Security - Frontend
+        stage('Snyk Container Security Report - Frontend') {
+            steps {
+                script {
+                    echo 'Generating Snyk Container Security HTML report for Frontend'
+                    withCredentials([string(credentialsId: 'snyk-token-string', variable: 'SNYK_TOKEN')]) {
+                        bat '''
+                            set SNYK_TOKEN=%SNYK_TOKEN%
+                            mkdir -p prestabanco-frontend\\reports
+                            C:\\Users\\kahao\\.jenkins\\tools\\io.snyk.jenkins.tools.SnykInstallation\\snyk_latest\\snyk-win.exe container test kahaozeng/prestabanco-frontend:latest --json --severity-threshold=low > prestabanco-frontend\\reports\\snyk-container-output.json || true
+                            cd prestabanco-frontend
+                            npx snyk-to-html -i reports\\snyk-container-output.json -o reports\\snyk-frontend-container-report.html || true
+                        '''
+                        archiveArtifacts artifacts: 'prestabanco-frontend/reports/snyk-frontend-container-report.html', allowEmptyArchive: true
                     }
                 }
             }
