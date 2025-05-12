@@ -147,13 +147,12 @@ pipeline {
             }
         }
 
-       stage('Deploy with Docker Compose') {
+        stage('Deploy with Docker Compose') {
             steps {
                 script {
                     try {
                         bat 'dir'
-                        bat 'copy compose2 docker-compose.yml'
-                        bat 'docker-compose up -d'
+                        bat 'docker-compose -f compose2.yml up -d'
                     } catch (Exception e) {
                         echo "Warning: Could not deploy with Docker Compose. Error: ${e.message}"
                     }
