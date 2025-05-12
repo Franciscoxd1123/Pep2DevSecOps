@@ -1,33 +1,47 @@
+
+version: '3'
+
 services:
   # Frontend service
   frontend:
     image: kahaozeng/prestabanco-frontend:latest
+    container_name: frontend-1
     networks:
       - frontend-network
+      - backend-network 
     ports:
       - "8070:80"
+    depends_on:
+      - backend
 
   # Backend service
   backend:
     image: kahaozeng/prestabanco-backend:latest
+    container_name: backend-1
     environment:
-      - DB_HOST=postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/prestabanco
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_JPA_SHOW_SQL: "true"
     networks:
       - backend-network
     ports:
       - "8090:8090"
+    depends_on:
+      - postgres
 
   # PostgreSQL service
   postgres:
     image: postgres:latest
+    container_name: postgres-1
     environment:
-      POSTGRES_DB: prestabanco  # Nombre de la base de datos
-      POSTGRES_USER: postgres      # Usuario de la base de datos
-      POSTGRES_PASSWORD: admin # Contraseña para el usuario
+      POSTGRES_DB: prestabanco      # Nombre de la base de datos
+      POSTGRES_USER: postgres       # Usuario de la base de datos
+      POSTGRES_PASSWORD: admin      # Contraseña para el usuario
     ports:
-      - "5433:5432"  # Expone el puerto 5432 para acceso externo
+      - "5433:5432"                 # Expone el puerto 5432 para acceso externo
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Persistencia de datos
+      - postgres:/var/lib/postgresql/data  # Persistencia de datos
     networks:
       - backend-network
 
@@ -36,4 +50,5 @@ networks:
   backend-network:
 
 volumes:
-  postgres_data:
+  postgres:
+    external: true
