@@ -147,12 +147,13 @@ pipeline {
             }
         }
 
-        stage('Deploy with Docker Compose') {
+       stage('Deploy with Docker Compose') {
             steps {
                 script {
                     try {
-                        bat 'if exist compose2 echo El archivo compose2 existe'
-                        bat 'docker-compose -f "%WORKSPACE%\\compose2" up -d'
+                        bat 'dir'
+                        bat 'copy compose2 docker-compose.yml'
+                        bat 'docker-compose up -d'
                     } catch (Exception e) {
                         echo "Warning: Could not deploy with Docker Compose. Error: ${e.message}"
                     }
