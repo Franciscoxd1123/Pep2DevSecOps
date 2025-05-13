@@ -14,14 +14,14 @@ services:
 
   # Backend service 
   backend:
-  image: kahaozeng/prestabanco-backend:latest
-  container_name: backend-1
-  network_mode: "host"  
-  environment:
-    DB_HOST: localhost
-    SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/prestabanco 
-    SPRING_DATASOURCE_USERNAME: postgres
-    SPRING_DATASOURCE_PASSWORD: admin
+    image: kahaozeng/prestabanco-backend:latest
+    container_name: backend-1
+    network_mode: "host"  
+    environment:
+      DB_HOST: localhost
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/prestabanco 
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
 
   # PostgreSQL service
   postgres:
